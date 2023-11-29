@@ -1,5 +1,5 @@
 ﻿using TP3.Models;
-namespace TP3.DAL.Interfaces
+namespace TP3.DAL.IRepositories
 {
     public interface IGenreRepository : IDisposable
     {

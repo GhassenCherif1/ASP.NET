@@ -1,4 +1,4 @@
-﻿using TP3.DAL.Interfaces;
+﻿using TP3.DAL.IRepositories;
 using TP3.Models;
 
 namespace TP3.DAL.Repositories

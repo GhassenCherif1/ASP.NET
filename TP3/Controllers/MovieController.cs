@@ -5,46 +5,42 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TP3.DAL.IRepositories;
 using TP3.Models;
 
 namespace TP3.Controllers
 {
     public class MovieController : Controller
     {
-        private readonly TP3Context _context;
+        private readonly IMovieRepository _movieRepository;
 
-        public MovieController(TP3Context context)
+        public MovieController(IMovieRepository movieRepository)
         {
-            _context = context;
+            _movieRepository = movieRepository;
         }
 
         // GET: Movie
         public async Task<IActionResult> Index()
         {
-            var tP3Context = _context.Movies.Include(m => m.Genre);
-            return View(await tP3Context.ToListAsync());
+            return View(_movieRepository.GetMovies());
         }
 
-        public async Task<IActionResult> AfficheSelonGenre(string? name)
+        public IActionResult AfficheSelonGenre(string? name)
         {
             if (name == null)
                 return RedirectToAction("Index");
             else
             {
                 ViewData["name"] = name.ToUpper();
-                // Query to retrieve movies with related Genre based on the specified genre name
-                var tP3Context = from t in _context.Movies.Include(t => t.Genre)
-                                 where t.Genre.GenreName == name
-                                 select t;
 
-                // Execute the query and convert the result to a list asynchronously
-                var movies = await tP3Context.ToListAsync();
-
-                // Return the list of movies as a view
-                return View(movies);
+                return View(_movieRepository.AfficheSelonGenre(name));
             }
         }
 
+        public IActionResult AfficheFilmsOrdonnes()
+        {
+            return View(_movieRepository.AfficheFilmsOrdonnes());
+        }
         public IActionResult Create()
         {
             return(View());
@@ -66,17 +62,18 @@ namespace TP3.Controllers
                     photoFile.CopyTo(fileStream);
                 }
 
-                // Save the file path to the Movie model (if needed)
-                movie.Photo = "uploads/"+fileName; // Assuming you have a PhotoPath property in your Movie model
+                // Save the file path to the Movie model
+                movie.Photo = "uploads/" + fileName;
             }
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
+            _movieRepository.InsertMovie(movie);
+
+            _movieRepository.Save();
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int? id)
         {
-            var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+            var movie = _movieRepository.GetMovieById(id);
             return View(movie);
         }
         [HttpPost]
@@ -99,16 +96,28 @@ namespace TP3.Controllers
                 // Save the file path to the Movie model (if needed)
                 movie.Photo = "uploads/" + fileName; // Assuming you have a PhotoPath property in your Movie model
             }
-            
-            _context.Movies.Update(movie);
-            _context.SaveChanges();
+
+            _movieRepository.UpdateMovie(movie);
+            _movieRepository.Save();
             return RedirectToAction("Index");
 
         }
         public IActionResult Details(int? id)
         {
-            var movie=_context.Movies.Include(t => t.Genre).FirstOrDefault(m => m.Id == id);
+            var movie=_movieRepository.GetMovieById(id);
             return View(movie);
+        }
+        public IActionResult Delete(int id)
+        {
+            var movie = _movieRepository.GetMovieById(id);
+            return View(movie);
+        }
+        [HttpPost]
+        public IActionResult Delete(Movie movie)
+        {
+            _movieRepository.DeleteMovie(movie.Id);
+            _movieRepository.Save();
+            return RedirectToAction("Index");
         }
     }
 }

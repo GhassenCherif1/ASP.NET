@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using TP3.DAL.Interfaces;
+using TP3.DAL.IRepositories;
 using TP3.Models;
 namespace TP3.Controllers
 {
@@ -62,19 +62,14 @@ namespace TP3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("Id,GenreName")] Genre genre)
         {
-            ViewData["Model"] = ModelState.Values;
             if (ModelState.IsValid)
             {
                 _genreRepository.UpdateGenre(genre);
                 _genreRepository.Save();
-
                 return RedirectToAction("Index");
+            }
+            return(View(genre));
                 
-            }
-            else
-            {
-                return(View(genre));
-            }
         }
     }
 }

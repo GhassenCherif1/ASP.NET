@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Edit"; 
 }
-<p>@ViewData["Model"]</p>
-<form asp-action="Edit" asp-controller="Genre" method="post">
+
+<form asp-action="Edit" asp-controller="Genre">
     <div class="form-group">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />

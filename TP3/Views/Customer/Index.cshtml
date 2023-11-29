@@ -1,0 +1,13 @@
+﻿@model IEnumerable<TP3.Models.Customer>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1> Customers </h1>
+
+@foreach(var item in Model)
+{
+    <h3>@Html.DisplayNameFor(modelItem => item.Name):</h3>
+    <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+    <h3>@Html.DisplayNameFor(modelItem => item.MembershipType.DiscountRate):</h3>
+    <h3>@Html.DisplayFor(modelItem => item.MembershipType.DiscountRate)</h3>
+}

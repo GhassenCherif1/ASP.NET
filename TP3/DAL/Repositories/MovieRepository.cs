@@ -24,25 +24,27 @@ namespace TP3.DAL.Repositories
         {
             context.Movies.Add(movie);
         }
-        public void DeleteMovie(int id)
+        public void DeleteMovie(Movie movie)
         {
-            Movie movie = context.Movies.Include(m => m.Genre).FirstOrDefault(m => m.Id==id);
             context.Movies.Remove(movie);
         }
         public void UpdateMovie(Movie movie)
         {
             context.Movies.Update(movie);
         }
-        public IEnumerable<Movie> AfficheSelonGenre(string name)
+        public IEnumerable<Movie> GetMoviesByGenreName(string name)
         {
             var movies = from c in context.Movies.Include(t => t.Genre)
                         where c.Genre.GenreName == name
                         select c;
             return movies.ToList();
         }
-        public IEnumerable<Movie> AfficheFilmsOrdonnes()
+        public IEnumerable<Movie> GetMoviesByGenreId(int id)
         {
-            return GetMovies().OrderBy(m => m.Name).ToList();
+            var movies = from c in context.Movies.Include(t => t.Genre)
+                         where c.genre_Id == id
+                         select c;
+            return movies.ToList();
         }
         public void Save()
         {

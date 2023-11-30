@@ -1,11 +1,6 @@
 ﻿@model IEnumerable<TP3.Models.Movie>
 
-@{
-    ViewData["Title"] = "Movies Ordered";
-}
-
-<h1>Movies Ordered By Name</h1>
-
+<h1>@ViewData["id"]</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -51,3 +46,5 @@
         }
     </tbody>
 </table>
+
+<div></div>

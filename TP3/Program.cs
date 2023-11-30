@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using TP3.DAL.IRepositories;
+using TP3.DAL.IServices;
 using TP3.DAL.Repositories;
+using TP3.DAL.Services;
 using TP3.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddDbContext<TP3Context>(options =>
 // Add services to the container.
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieService,MovieService >();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -33,8 +36,8 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "nom",
-        pattern: "movie/AfficheSelonGenre/{name?}",
-        defaults: new { controller = "Movie", action = "AfficheSelonGenre" });
+        pattern: "movie/AfficheSelonGenreNom/{name?}",
+        defaults: new { controller = "Movie", action = "AfficheSelonGenreNom" });
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");

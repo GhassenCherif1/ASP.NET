@@ -6,26 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TP3.DAL.IRepositories;
+using TP3.DAL.IServices;
 using TP3.Models;
 
 namespace TP3.Controllers
 {
     public class MovieController : Controller
     {
-        private readonly IMovieRepository _movieRepository;
-
-        public MovieController(IMovieRepository movieRepository)
+        private readonly IMovieService _movieService;
+        public MovieController(IMovieService movieService)
         {
-            _movieRepository = movieRepository;
+            _movieService = movieService;
         }
+
 
         // GET: Movie
         public async Task<IActionResult> Index()
         {
-            return View(_movieRepository.GetMovies());
+            return View(_movieService.GetMovies());
         }
 
-        public IActionResult AfficheSelonGenre(string? name)
+        public IActionResult AfficheSelonGenreNom(string? name)
         {
             if (name == null)
                 return RedirectToAction("Index");
@@ -33,13 +34,18 @@ namespace TP3.Controllers
             {
                 ViewData["name"] = name.ToUpper();
 
-                return View(_movieRepository.AfficheSelonGenre(name));
+                return View(_movieService.AfficheSelonGenreNom(name));
             }
         }
 
         public IActionResult AfficheFilmsOrdonnes()
         {
-            return View(_movieRepository.AfficheFilmsOrdonnes());
+            return View(_movieService.AfficheFilmsOrdonnes());
+        }
+        public IActionResult AfficheSelonGenreId(int id)
+        {
+            ViewData["id"] = id;
+            return View(_movieService.AfficheSelonGenreId(id));
         }
         public IActionResult Create()
         {
@@ -65,15 +71,13 @@ namespace TP3.Controllers
                 // Save the file path to the Movie model
                 movie.Photo = "uploads/" + fileName;
             }
-            _movieRepository.InsertMovie(movie);
-
-            _movieRepository.Save();
+            _movieService.AddMovie(movie);
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int? id)
         {
-            var movie = _movieRepository.GetMovieById(id);
+            var movie = _movieService.GetMovieById(id);
             return View(movie);
         }
         [HttpPost]
@@ -97,26 +101,24 @@ namespace TP3.Controllers
                 movie.Photo = "uploads/" + fileName; // Assuming you have a PhotoPath property in your Movie model
             }
 
-            _movieRepository.UpdateMovie(movie);
-            _movieRepository.Save();
+            _movieService.UpdateMovie(movie);
             return RedirectToAction("Index");
 
         }
         public IActionResult Details(int? id)
         {
-            var movie=_movieRepository.GetMovieById(id);
+            var movie=_movieService.GetMovieById(id);
             return View(movie);
         }
         public IActionResult Delete(int id)
         {
-            var movie = _movieRepository.GetMovieById(id);
+            var movie = _movieService.GetMovieById(id);
             return View(movie);
         }
         [HttpPost]
         public IActionResult Delete(Movie movie)
         {
-            _movieRepository.DeleteMovie(movie.Id);
-            _movieRepository.Save();
+            _movieService.DeleteMovie(movie);
             return RedirectToAction("Index");
         }
     }

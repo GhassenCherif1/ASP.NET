@@ -52,8 +52,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcQWZmaWNoZUZpbG1zT3Jkb25uZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ghass/source/repos/TP3/TP3/Views/Movie/AfficheSelonGenre.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcQWZmaWNoZVNlbG9uR2VucmUuY3NodG1s
+[C:/Users/ghass/source/repos/TP3/TP3/Views/Movie/AfficheSelonGenreId.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcQWZmaWNoZVNlbG9uR2VucmVJZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ghass/source/repos/TP3/TP3/Views/Movie/AfficheSelonGenreNom.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcQWZmaWNoZVNlbG9uR2VucmVOb20uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ghass/source/repos/TP3/TP3/Views/Movie/Create.cshtml]
